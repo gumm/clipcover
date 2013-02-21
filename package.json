@@ -1,0 +1,20 @@
+{
+  "name": "clipcover",
+  "description": "Closure Library style test and coverage",
+  "version": "0.0.1",
+  "author": "Jan Badenhorst <janhendrik.badenhorst@gmail.com>",
+  "license": "MIT-License",
+  "keywords": ["test", "closure-library", "phantomjs", "coverage", "jscoverage"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gumm/clipcover.git"
+  },
+  "bin": {
+    "clipcover": "./bin/clipcover"
+  },
+  "engines": "*",
+  "dependencies": {
+    "commander": ">= 1.1.x",
+    "phantomjs": ">= 1.7.x"
+  }
+}

@@ -1,0 +1,77 @@
+#!/usr/bin/env node
+
+'use strict';
+
+
+/**
+ * Module dependencies.
+ */
+var program = require('commander');
+var fs = require('fs');
+var coverage = require('../lib/coverage');
+var path = require('path');
+var util = require('util');
+var childProcess = require('child_process');
+var reportPlugin = require('../lib/reporters');
+var phantomjs = require('phantomjs');
+
+/**
+ * Write to the console.
+ * @type {reportPlugin.Spec}
+ */
+var write = new reportPlugin.Spec();
+
+//--------------------------------------------------[ Config Coverage Module ]--
+
+var coverageManager = (function() {
+    var covMan;
+    var userCover = 'jscoverage';
+    if (userCover && coverage[userCover]) {
+        covMan = new coverage[userCover]();
+    } else {
+        covMan = new coverage.none();
+    }
+    covMan.setReporter(write);
+    covMan.startServer();
+    return covMan;
+})();
+
+//-------------------------------------------------[ PhantomJs Child Process ]--
+
+/**
+* The arguments that will be passed to phantomjs.
+* @type {Array}
+*/
+var childArgs = [
+    path.join(__dirname, '../lib/phantomjob.js'),
+    'some other argument (passed to phantomjs script)'
+];
+
+/**
+* @type {*}
+*/
+var phantomProcess = childProcess.execFile(
+    phantomjs.path,
+    childArgs,
+    {timeout: 600000},
+    function(err, stdout, stderr) {
+        write.phantomDebug(stdout);
+    }
+);
+
+/**
+* Display console output.
+*/
+phantomProcess.stdout.on('data', function(data) {
+    util.print(data.toString());
+});
+
+phantomProcess.on('exit', function(code) {
+    if (code === 127) {
+        write.phantomDebug('Perhaps phantomjs is not installed?\n');
+    }
+    coverageManager.stopServer();
+    write.phantomDebug('Phantom dead.');
+
+    process.exit(code);
+});
