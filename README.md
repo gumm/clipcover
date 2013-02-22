@@ -34,13 +34,14 @@ It is assumed that you have downloaded and installed jscoverage. To test:
 jscoverage-server --version
 ```
 Should return:
-
+```shell
 jscoverage-server 0.5.1
 Character encoding support: iconv
 Copyright (C) 2010 siliconforks.com
 License GPLv2+: GNU GPL version 2 or later <http://siliconforks.com/jscoverage/license.html>
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
+```
 
 PhantomJs is automatically installed and available via the npm wrapper [phantomjs](https://npmjs.org/package/phantomjs)
 
