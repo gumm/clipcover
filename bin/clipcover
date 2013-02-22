@@ -16,6 +16,55 @@ var spawn = require('child_process').spawn;
 var reportPlugin = require('../lib/reporters');
 var phantomjs = require('phantomjs');
 
+//-----------------------------------------------------------[ CLI Arguments ]--
+
+/**
+ * Build command line options.
+ */
+program.version(require('../package.json').version)
+    .usage('[options] workspace <path to project root>')
+    .option('-f, --test-file <path>',
+        'relative path from workspace to test file ' +
+                '[/media/js/trin/tests/all_tests.html]',
+        '/media/js/trin/tests/all_tests.html')
+    .option('-i, --ignore-dir <path>',
+        'relative path from workspace, nothing here will be instrumented '+
+                '[/media/js/closure-library/]',
+        '/media/js/closure-library/')
+    .option('-t, --timeout <milliseconds>',
+        'maximum time phantomjs will be kept alive [600000]',
+        parseInt, 600000)
+    .option('-s, --server-ip-address <address>',
+        'coverage server ip address [0.0.0.0]',
+        '0.0.0.0')
+    .option('-p, --server-port <port>',
+        'coverage server port [8080]',
+        '8080')
+    .option('-r, --report-dir <path>',
+        'absolute path to dir where reports will be written [/tmp/reports/]',
+        '/tmp/reports/')
+    .parse(process.argv);
+
+var config = {
+    workSpace: program.args[0],
+    testFile: program.testFile,
+    timeout : program.timeout,
+    serverIpAddress : program.serverIpAddress,
+    serverPort : program.serverPort,
+    reportDir : program.reportDir,
+    ignoreDir : program.ignore
+};
+config.phantomTarget = path.join('http://' +
+        config.serverIpAddress + ':' + config.serverPort + '/',
+        config.testFile);
+
+if (program.args.length != 1) {
+    program.help();
+    process.exit(1);
+}
+
+//----------------------------------------------------------[ Console Writer ]--
+
 /**
  * Write to the console.
  * @type {reportPlugin.Spec}
@@ -35,14 +84,12 @@ var coverageManager = (function() {
     return covMan;
 })();
 
-var workSpace = '/home/gumm/Workspace/smart-2.12';
-var reportDestination = workSpace + '/media/coverage/';
 var spawnArgs = [
-    '--document-root=' + workSpace,
-    '--ip-address=0.0.0.0',
-    '--port=8080',
-    '--no-instrument=/media/js/closure-library/',
-    '--report-dir=' + reportDestination
+    '--document-root=' + config.workSpace,
+    '--ip-address=' + config.serverIpAddress,
+    '--port=' + config.serverPort,
+    '--no-instrument=' + config.ignoreDir,
+    '--report-dir=' + config.reportDir
 ];
 coverageManager.start(spawn, spawnArgs);
 
@@ -54,7 +101,7 @@ coverageManager.start(spawn, spawnArgs);
 */
 var childArgs = [
     path.join(__dirname, '../lib/phantomjob.js'),
-    'some other argument (passed to phantomjs script)'
+    config.phantomTarget
 ];
 
 /**
