@@ -1,6 +1,6 @@
 # Clipcover #
 
-An NPM wrapper for running [Google Closure Library](http://code.google.com/closure/library/index.html) style *_test.html style tests.
+A NPM wrapper for running [Google Closure Library](http://code.google.com/closure/library/index.html) style *_test.html style tests.
 Code coverage reporting provided by a [JSCoverage](http://siliconforks.com/jscoverage/) server instance, and tests via a headless [PhantomJS](http://code.google.com/p/phantomjs/) browser.
 
 Test result output is in TAP format and JSCoverage's HTML coverage reports.
@@ -64,7 +64,7 @@ From this entry point two command line flags control the input. Both these paths
 Supported command-line options are:
  * `--test-file` or `-f`  A *relative* path the HTML test entry point. [/media/js/tests/all_tests.html]
  * `--ignore` or `-i`     A *relative* path to a directory to be excluded from coverage reports. [/media/js/closure-library/]
- 
+
 Clipcover also needs to know where you want the reports written to. This path is *not* relative, and can be anywhere
 on the filesystem. Coverage reports in HTML format will be written to this directory. The TAP output file will also
 be located here. Below are examples of the CLI relevant CLI flags:
@@ -78,7 +78,7 @@ Taken together, these flags (or rather the defaults of these flags) produce a se
 by pointing your browser to http://0.0.0.0:8080/
 
 For a bit of housekeeping, Clipcover can be given a limited time to run in. This is the maximum time that both the
-PhantomJS browser and the JSCover server will be kept alive. 
+PhantomJS browser and the JSCover server will be kept alive.
  * `--timeout` or `-t` Is the maximum time - in milliseconds - that the servie will be kept alive. [600000] (10min)
 
 For help
