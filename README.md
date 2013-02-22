@@ -5,7 +5,6 @@ An NPM wrapper for running [Google Closure Library](http://code.google.com/closu
 Code coverage reporting provided by a [JSCoverage](http://siliconforks.com/jscoverage/) server instance, and tests via a headless [PhantomJS](http://code.google.com/p/phantomjs/) browser.
 
 Test result output is in TAP format and JSCoverage's HTML coverage reports.
-
 Clipcover is built on the excelent work in [closure-library-phantomjs](https://github.com/waka/closure-library-phantomjs) (thanks to [yo_waka](https://github.com/waka))
 
 Installing
@@ -30,7 +29,7 @@ This will install PhantomJS as a node module.
 
 Requirements
 ------------
-Clipcover depends on JSCoverage to be installed. For instructions please visit their [download page](http://siliconforks.com/jscoverage/download.html).
+Clipcover requires on JSCoverage to be installed by hand. For instructions please visit their [download page](http://siliconforks.com/jscoverage/download.html).
 
 Once installed, you can test it with:
 ```shell
@@ -49,6 +48,13 @@ There is NO WARRANTY, to the extent permitted by law.
 PhantomJs is automatically installed and available via the npm wrapper [phantomjs](https://npmjs.org/package/phantomjs)
 
 ### Usage
+
+Clipcover is intended to be run from the command line. When run, it:
+1. spawns an instrumenting web server to serve the HTML test files.
+2. spawns a headless browser to provide the environment for the tests to run in.
+3. collects test results from the browser
+4. collects coverage results from the server
+5. on compleation of the test run, it closes the browser, closes the server, and stores the reports.
 
 Usage: clipcover [options] workspace <path to project root>
 
