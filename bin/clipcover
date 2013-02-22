@@ -43,22 +43,26 @@ program.version(require('../package.json').version)
     .option('-r, --report-dir <path>',
         'absolute path to dir where reports will be written [/tmp/reports/]',
         '/tmp/reports/')
+    .option('-o, --output-file <path>',
+            'name of test result output file to be written in report dir [result.txt]',
+            'result.txt')
     .parse(process.argv);
 
 var config = {
     workSpace: program.args[0],
     testFile: program.testFile,
-    timeout : program.timeout,
-    serverIpAddress : program.serverIpAddress,
-    serverPort : program.serverPort,
-    reportDir : program.reportDir,
+    timeout: program.timeout,
+    serverIpAddress: program.serverIpAddress,
+    serverPort: program.serverPort,
+    reportDir: program.reportDir,
+    outputFile: path.join(program.reportDir, program. outputFile),
     ignoreDir : program.ignore
 };
 config.phantomTarget = path.join('http://' +
         config.serverIpAddress + ':' + config.serverPort + '/',
         config.testFile);
 
-if (program.args.length != 1) {
+if (program.args.length !== 1) {
     program.help();
     process.exit(1);
 }
@@ -101,7 +105,8 @@ coverageManager.start(spawn, spawnArgs);
 */
 var childArgs = [
     path.join(__dirname, '../lib/phantomjob.js'),
-    config.phantomTarget
+    config.phantomTarget,
+    config.outputFile
 ];
 
 /**
