@@ -53,7 +53,7 @@ Clipcover is intended to be run from the command line. When run, it:
  4. collects coverage results from the server
  5. on compleation of the test run, it closes the browser, closes the server, and stores the reports.
 
-#### Controlling the Input ####
+#### Command-line Options ####
 This means there is a bit of setup to be done. The easiest way was to pass Clipcover a single
 working directory as an entry point. This will be used as the root of the web server as well, and all files that
 you want to test, should be available below this point.
@@ -61,23 +61,28 @@ you want to test, should be available below this point.
 > clipcover ~/Workspace/myClosureProject/
 
 From this entry point two command line flags control the input. Both these paths are *relative* to the given workspace.
-> -f /media/js/tests/all_tests.html 
-
-> -i /media/js/closure-library/
+Supported command-line options are:
+ * `--test-file` or `-f`  A *relative* path the the HTML test entry point. [/media/js/tests/all_tests.html]
+ * `--ignore` or `-i`     A *relative* path to a directory to be excluded from coverage reports. [/media/js/closure-library/]
  
 Clipcover also needs to know where you want the reports written to. This path is *not* relative, and can be anywhere
 on the filesystem. Coverage reports in HTML format will be written to this directory. The TAP output file will also
 be located here. Below are examples of the CLI relevant CLI flags:
-> -r /tmp/reports/output/
+ * `--report-dir` or `-r` An *absolute* system path to a directory where the reports will be written. [/tmp/reports/output/]
+ * `--output-file` or `-o` A name of the TAP report file. Will be written to the directory specified by `--report-dir` [tap.txt]
 
-> -o tap.txt
+The server that Clipcover starts needs an IP address and port number. The following flags are used to specify those:
+ * `--server-ip-address` or `-s` This is the number part of the address *only* [0.0.0.0]
+ * `--server-port` or `-p` The number of the port on which the server will run [8080]
+Taken together, these flags (or rather the defaults of these flags) produce a server that is accessable
+by pointing your browser to http://0.0.0.0:8080/
 
+For a bit of housekeeping, Clipcover can be given a limited time to run in. This is the maximum time that both the
+PhantomJS browser and the JSCover server will be kept alive. 
+ * `--timeout` or `-t` Is the maximum time - in milliseconds - that the servie will be kept alive. [600000] (10min)
 
-
-
-Usage: clipcover [options] workspace <path to project root>
-
-  Options:
+For help
+ * `--help` or `-h` Gives remiders of the available CLI flags
 
     -h, --help                         output usage information
     -V, --version                      output the version number
