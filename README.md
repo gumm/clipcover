@@ -58,11 +58,11 @@ This means there is a bit of setup to be done. The easiest way was to pass Clipc
 working directory as an entry point. This will be used as the root of the web server as well, and all files that
 you want to test, should be available below this point.
 
-> clipcover ~/Workspace/myClosureProject/
+`clipcover ~/Workspace/myClosureProject/`
 
 From this entry point two command line flags control the input. Both these paths are *relative* to the given workspace.
 Supported command-line options are:
- * `--test-file` or `-f`  A *relative* path the the HTML test entry point. [/media/js/tests/all_tests.html]
+ * `--test-file` or `-f`  A *relative* path the HTML test entry point. [/media/js/tests/all_tests.html]
  * `--ignore` or `-i`     A *relative* path to a directory to be excluded from coverage reports. [/media/js/closure-library/]
  
 Clipcover also needs to know where you want the reports written to. This path is *not* relative, and can be anywhere
@@ -84,12 +84,15 @@ PhantomJS browser and the JSCover server will be kept alive.
 For help
  * `--help` or `-h` Gives remiders of the available CLI flags
 
-    -h, --help                         output usage information
-    -V, --version                      output the version number
-    -f, --test-file <path>             relative path from workspace to test file [/media/js/trin/tests/all_tests.html]
-    -i, --ignore-dir <path>            relative path from workspace, nothing here will be instrumented [/media/js/closure-library/]
-    -t, --timeout <milliseconds>       maximum time phantomjs will be kept alive [600000]
-    -s, --server-ip-address <address>  coverage server ip address [0.0.0.0]
-    -p, --server-port <port>           coverage server port [8080]
-    -r, --report-dir <path>            absolute path to dir where reports will be written [/tmp/reports/]
-    -o, --output-file <path>           name of test result output file to be written in report dir [result.txt]
+
+```shell
+-h, --help                         output usage information
+-V, --version                      output the version number
+-f, --test-file <path>             relative path from workspace to test file [/media/js/trin/tests/all_tests.html]
+-i, --ignore-dir <path>            relative path from workspace, nothing here will be instrumented [/media/js/closure-library/]
+-t, --timeout <milliseconds>       maximum time phantomjs will be kept alive [600000]
+-s, --server-ip-address <address>  coverage server ip address [0.0.0.0]
+-p, --server-port <port>           coverage server port [8080]
+-r, --report-dir <path>            absolute path to dir where reports will be written [/tmp/reports/]
+-o, --output-file <path>           name of test result output file to be written in report dir [result.txt]
+```
