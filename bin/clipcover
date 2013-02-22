@@ -12,6 +12,7 @@ var coverage = require('../lib/coverage');
 var path = require('path');
 var util = require('util');
 var childProcess = require('child_process');
+var spawn = require('child_process').spawn;
 var reportPlugin = require('../lib/reporters');
 var phantomjs = require('phantomjs');
 
@@ -31,10 +32,19 @@ var coverageManager = (function() {
     } else {
         covMan = new coverage.none();
     }
-    covMan.setReporter(write);
-    covMan.startServer();
     return covMan;
 })();
+
+var workSpace = '/home/gumm/Workspace/smart-2.12';
+var reportDestination = workSpace + '/media/coverage/';
+var spawnArgs = [
+    '--document-root=' + workSpace,
+    '--ip-address=0.0.0.0',
+    '--port=8080',
+    '--no-instrument=/media/js/closure-library/',
+    '--report-dir=' + reportDestination
+];
+coverageManager.start(spawn, spawnArgs);
 
 //-------------------------------------------------[ PhantomJs Child Process ]--
 
@@ -70,7 +80,7 @@ phantomProcess.on('exit', function(code) {
     if (code === 127) {
         write.phantomDebug('Perhaps phantomjs is not installed?\n');
     }
-    coverageManager.stopServer();
+    coverageManager.stop(spawn);
     write.phantomDebug('Phantom dead.');
 
     process.exit(code);
