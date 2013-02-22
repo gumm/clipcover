@@ -1,35 +1,38 @@
 clipcover
 =======
 
-An NPM wrapper for running [Google Closure Library](http://code.google.com/closure/library/index.html) style *_test.html style tests. Code
-coverage is supported via the jscoverage package. It runs [phantomjs](http://code.google.com/p/phantomjs/) as the headless browser to run the tests in.
-Output is to TAP format and jscoverage's HTML coverage reports.
+An NPM wrapper for running [Google Closure Library](http://code.google.com/closure/library/index.html) style *_test.html style tests.
+Code coverage reporting provided by a [JSCoverage](http://siliconforks.com/jscoverage/) server instance, and tests via a headless [PhantomJS](http://code.google.com/p/phantomjs/) browser.
 
-This is built on closure-library-phantomjs (thanks to [yo_waka](https://github.com/waka))
+Test result output is in TAP format and JSCoverage's HTML coverage reports.
 
-Building and Installing
------------------------
+Clipcover is built on the excelent work in closure-library-phantomjs (thanks to [yo_waka](https://github.com/waka))
+
+Installing
+----------
+Clipcover is packaged as a Node module, and is available via:
 
 ```shell
 npm install clipcover
 ```
 
-Or grab the source
+Or if you prefer the source:
 
 ```shell
 git clone https://github.com/gumm/clipcover.git
 ```
-
-then cd into clipcover and
+Once downloaded, you can get the required dependant packages via:
 
 ```shell
 npm install
 ```
+This will install PhantomJS as a node module. 
 
 Requirements
 ------------
+Clipcover depends on JSCoverage to be installed. For instructions please visit their [download page](http://siliconforks.com/jscoverage/download.html).
 
-It is assumed that you have downloaded and installed jscoverage. To test:
+Once installed, you can test it with:
 ```shell
 jscoverage-server --version
 ```
@@ -38,7 +41,7 @@ Should return:
 jscoverage-server 0.5.1
 Character encoding support: iconv
 Copyright (C) 2010 siliconforks.com
-License GPLv2+: GNU GPL version 2 or later <http://siliconforks.com/jscoverage/license.html>
+License GPLv2+: GNU GPL version 2 or later (http://siliconforks.com/jscoverage/license.html)
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 ```
