@@ -6,7 +6,7 @@ Code coverage reporting provided by a [JSCoverage](http://siliconforks.com/jscov
 
 Test result output is in TAP format and JSCoverage's HTML coverage reports.
 
-Clipcover is built on the excelent work in closure-library-phantomjs (thanks to [yo_waka](https://github.com/waka))
+Clipcover is built on the excelent work in [closure-library-phantomjs](https://github.com/waka/closure-library-phantomjs) (thanks to [yo_waka](https://github.com/waka))
 
 Installing
 ----------
@@ -26,7 +26,7 @@ Once downloaded, you can get the required dependant packages via:
 ```shell
 npm install
 ```
-This will install PhantomJS as a node module. 
+This will install PhantomJS as a node module.
 
 Requirements
 ------------
