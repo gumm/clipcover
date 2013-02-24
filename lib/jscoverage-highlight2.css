@@ -1,0 +1,19 @@
+#sourceTable .k {
+    font-weight: bold;
+}
+
+/* string, regexp, number */
+#sourceTable .s {
+    color: #d14;
+}
+
+/* specialchar */
+#sourceTable .t {
+    color: #009999;
+}
+
+/* comment */
+#sourceTable .c {
+    font-style: italic;
+    color: #999988;
+}
