@@ -22,15 +22,14 @@ var phantomjs = require('phantomjs');
  * Build command line options.
  */
 program.version(require('../package.json').version)
-    .usage('[options] workspace <path to project root>')
+    .usage('[options] workspace')
     .option('-f, --test-file <path>',
         'relative path from workspace to test file ' +
-                '[/media/js/trin/tests/all_tests.html]',
-        '/media/js/trin/tests/all_tests.html')
-    .option('-i, --ignore-dir <path>',
+                '[media/js/tests/all_tests.html]',
+        'media/js/tests/all_tests.html')
+    .option('-i, --ignore <url>',
         'relative path from workspace, nothing here will be instrumented '+
-                '[/media/js/closure-library/]',
-        '/media/js/closure-library/')
+                '[none]')
     .option('-t, --timeout <milliseconds>',
         'maximum time phantomjs will be kept alive [600000]',
         parseInt, 600000)
@@ -44,8 +43,8 @@ program.version(require('../package.json').version)
         'absolute path to dir where reports will be written [/tmp/reports/]',
         '/tmp/reports/')
     .option('-o, --output-file <path>',
-            'name of test result output file to be written in report dir [result.txt]',
-            'result.txt')
+            'name of test result output file to be written in report dir [tap.txt]',
+            'tap.txt')
     .parse(process.argv);
 
 var config = {
@@ -56,7 +55,10 @@ var config = {
     serverPort: program.serverPort,
     reportDir: program.reportDir,
     outputFile: path.join(program.reportDir, program. outputFile),
-    ignoreDir : program.ignore
+    ignoreUrl: program.ignore,
+    spawn: spawn,
+    path: path,
+    fs: fs
 };
 config.phantomTarget = path.join('http://' +
         config.serverIpAddress + ':' + config.serverPort + '/',
@@ -74,6 +76,7 @@ if (program.args.length !== 1) {
  * @type {reportPlugin.Spec}
  */
 var write = new reportPlugin.Spec();
+config.write = write;
 
 //--------------------------------------------------[ Config Coverage Module ]--
 
@@ -89,12 +92,15 @@ var coverageManager = (function() {
 })();
 
 var spawnArgs = [
+    '-v',
     '--document-root=' + config.workSpace,
     '--ip-address=' + config.serverIpAddress,
     '--port=' + config.serverPort,
-    '--no-instrument=' + config.ignoreDir,
     '--report-dir=' + config.reportDir
 ];
+if (!!config.ignoreUrl) {
+    spawnArgs.push('--no-instrument=' + config.ignoreUrl);
+}
 coverageManager.start(spawn, spawnArgs);
 
 //-------------------------------------------------[ PhantomJs Child Process ]--
@@ -129,11 +135,18 @@ phantomProcess.stdout.on('data', function(data) {
 });
 
 phantomProcess.on('exit', function(code) {
+
+    var exitCallback = function() {
+        write.phantomDebug('Process stopped.');
+        process.exit(code);
+    };
+
     if (code === 127) {
         write.phantomDebug('Perhaps phantomjs is not installed?\n');
+        coverageManager.stop(config);
+    } else {
+        coverageManager.stop(config, exitCallback);
     }
-    coverageManager.stop(spawn);
-    write.phantomDebug('Phantom dead.');
-
-    process.exit(code);
 });
+
+
