@@ -21,7 +21,7 @@
   "engines": "*",
   "dependencies": {
     "commander": ">= 1.1.x",
-    "phantomjs": ">= 1.7.x"
+    "phantomjs": ">= 1.8.x"
   },
   "readmeFilename": "README.md",
   "gitHead": "a65a4b4d2a179e003acd9b8ed713fbaa0d3bc7b4",

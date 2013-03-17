@@ -32,7 +32,7 @@ program.version(require('../package.json').version)
                 '[none]')
     .option('-t, --timeout <milliseconds>',
         'maximum time phantomjs will be kept alive [600000]',
-        parseInt, 600000)
+        parseInt, 2000)
     .option('-s, --server-ip-address <address>',
         'coverage server ip address [0.0.0.0]',
         '0.0.0.0')
