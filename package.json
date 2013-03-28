@@ -1,7 +1,7 @@
 {
   "name": "clipcover",
   "description": "Closure Library style test and coverage",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "author": "Jan Badenhorst <janhendrik.badenhorst@gmail.com>",
   "license": "BSD",
   "keywords": [
