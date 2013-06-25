@@ -8,11 +8,11 @@
  */
 var program = require('commander');
 var fs = require('fs');
-var coverage = require('../lib/coverage');
+
+var jsCoverageReporter = require('../lib/coverage').jsCoverageReporter;
 var path = require('path');
 var util = require('util');
 var childProcess = require('child_process');
-var spawn = require('child_process').spawn;
 var reportPlugin = require('../lib/reporters');
 var phantomjs = require('phantomjs');
 
@@ -60,7 +60,6 @@ var config = {
     outputFile: path.join(program.reportDir, program. outputFile),
     ignoreUrl: program.ignore,
     reportFormat: program.reportFormat,
-    spawn: spawn,
     path: path,
     fs: fs
 };
@@ -84,19 +83,7 @@ config.write = write;
 
 //--------------------------------------------------[ Config Coverage Module ]--
 
-var coverageManager = (function() {
-    var covMan;
-    var userCover = 'jscoverage';
-    if (userCover && coverage[userCover]) {
-        covMan = new coverage[userCover]();
-    } else {
-        covMan = new coverage.none();
-    }
-    return covMan;
-})();
-
 var spawnArgs = [
-    '-v',
     '--document-root=' + config.workSpace,
     '--ip-address=' + config.serverIpAddress,
     '--port=' + config.serverPort,
@@ -105,7 +92,15 @@ var spawnArgs = [
 if (!!config.ignoreUrl) {
     spawnArgs.push('--no-instrument=' + config.ignoreUrl);
 }
-coverageManager.start(spawn, spawnArgs);
+
+write.phantomDebug(spawnArgs.join(' '));
+
+//childProcess.exec('jscoverage-server --verbose', function);
+var coverageManager = new jsCoverageReporter();
+coverageManager.start(spawnArgs);
+
+
+
 
 //-------------------------------------------------[ PhantomJs Child Process ]--
 
@@ -141,16 +136,21 @@ phantomProcess.stdout.on('data', function(data) {
 
 phantomProcess.on('exit', function(code) {
 
+//    childProcess.exec('jscoverage-server --shutdown');
+//    coverageManager.stop();
+
     var exitCallback = function() {
         write.phantomDebug('Process stopped.');
         process.exit(code);
     };
 
+    coverageManager.stop(exitCallback);
+
     if (code === 127) {
         write.phantomDebug('Perhaps phantomjs is not installed?\n');
-        coverageManager.stop(config);
+        exitCallback();
     } else {
-        coverageManager.stop(config, exitCallback);
+        exitCallback();
     }
 });
 
