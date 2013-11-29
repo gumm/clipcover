@@ -84,6 +84,7 @@ config.write = write;
 //--------------------------------------------------[ Config Coverage Module ]--
 
 var spawnArgs = [
+    '--verbose',
     '--document-root=' + config.workSpace,
     '--ip-address=' + config.serverIpAddress,
     '--port=' + config.serverPort,
