@@ -131,7 +131,7 @@ var phantomProcess = childProcess.execFile(
 * Display console output.
 */
 phantomProcess.stdout.on('data', function(data) {
-    util.print(data.toString());
+    console.log(data.toString());
 });
 
 phantomProcess.on('exit', function(code) {
